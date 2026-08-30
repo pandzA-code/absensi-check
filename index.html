@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#35d3b1">
+<title>Absensi Sekolah</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#27364d}
+button,input{font:inherit}
+.container{max-width:480px;margin:auto;min-height:100vh;background:#f8fafc}
+.hidden{display:none!important}
+.login{min-height:100vh;padding:35px 24px;display:flex;align-items:center}
+.card{background:white;border-radius:24px;padding:24px;box-shadow:0 8px 30px #20304012}
+.logo{width:82px;height:82px;border-radius:50%;background:#eaf1ff;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:38px}
+h1{font-size:30px;text-align:center;margin:5px 0 8px}
+.sub{text-align:center;color:#8b98aa;margin-bottom:28px}
+label{display:block;font-weight:700;margin:14px 0 7px}
+input,select{width:100%;padding:15px;border:1px solid #dde4ef;border-radius:14px;outline:none;background:#fff}
+.btn{border:0;border-radius:15px;padding:15px;width:100%;font-weight:700;cursor:pointer}
+.primary{background:#7c83f0;color:white}
+.demo{background:#eef0ff;color:#555bd2;margin-top:10px}
+.error{color:#e85c73;text-align:center;margin-top:12px;font-size:14px}
+.top{height:72px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:5;box-shadow:0 2px 12px #2030400d}
+.menu{font-size:30px}
+.page{padding:18px}
+.hero{background:linear-gradient(135deg,#35d3a7,#28c9c7);color:white;border-radius:24px;padding:28px 22px;margin-bottom:20px;box-shadow:0 12px 25px #35cfa544}
+.hero h2{font-size:28px;margin:0 0 12px}
+.clock{margin-top:22px;background:#ffffff22;border:1px solid #ffffff30;border-radius:18px;padding:16px}
+.clock small{display:block;opacity:.85;margin-bottom:8px}
+.clock strong{font-size:34px}
+.stats{display:grid;gap:14px}
+.stat{background:white;border-radius:22px;padding:22px;display:flex;align-items:center;gap:18px;box-shadow:0 5px 20px #2030400b}
+.icon{width:58px;height:58px;border-radius:17px;background:#eef0ff;display:flex;align-items:center;justify-content:center;font-size:27px}
+.stat b{font-size:30px;display:block;margin-top:4px}
+.stat span{color:#8d9aab;font-weight:700}
+.section{background:white;border-radius:22px;padding:20px;margin-top:18px;box-shadow:0 5px 20px #2030400b}
+.row{display:flex;justify-content:space-between;gap:10px;margin:12px 0;padding-bottom:12px;border-bottom:1px solid #edf0f5}
+.badge{padding:6px 10px;border-radius:20px;background:#e5f9f1;color:#18a779;font-weight:700;font-size:13px}
+.nav{display:flex;gap:10px;margin:16px 0}
+.nav button{flex:1;border:0;padding:12px;border-radius:13px;background:white;color:#4c5d73}
+.nav .active{background:#e9ecff;color:#575edb;font-weight:700}
+.logout{margin-top:20px;background:white;color:#e65c74;border:1px solid #ffd5dc}
+.small{font-size:13px;color:#8794a6}
+
+.camera-box{background:#eef1f5;border-radius:18px;overflow:hidden;min-height:260px;display:flex;align-items:center;justify-content:center}
+.camera-box video{width:100%;display:block;max-height:360px;object-fit:cover}
+.photo-preview{width:100%;border-radius:18px;display:block}
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.info-box{background:#f8fafc;border:1px solid #e3e8f0;border-radius:16px;padding:14px;margin-top:12px}
+.gps-ok{color:#18a779;font-weight:700}.gps-warn{color:#e65c74;font-weight:700}
+
+.menu{border:0;background:transparent;color:#27364d;padding:0;cursor:pointer}
+.side-menu{position:fixed;top:0;left:0;width:280px;max-width:82%;height:100vh;background:white;z-index:20;padding:24px 18px;box-shadow:12px 0 35px #20304020;transform:translateX(-105%);transition:.25s ease}
+.side-menu.open{transform:translateX(0)}
+.side-title{font-size:22px;font-weight:800;margin:8px 8px 25px}
+.side-menu button{width:100%;text-align:left;border:0;background:#f7f8fc;padding:15px;border-radius:14px;margin:5px 0;font-weight:700;color:#33435a}
+.menu-overlay{position:fixed;inset:0;background:#0005;z-index:15;display:none}
+.side-menu.open + .menu-overlay{display:block}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.menu-card{border:1px solid #e7ebf2;background:#fafbff;border-radius:18px;padding:18px 12px;text-align:left;cursor:pointer}
+.menu-card span{display:block;font-size:30px;margin-bottom:10px}
+.menu-card b{display:block;font-size:16px;color:#27364d}
+.menu-card small{display:block;color:#8b98aa;margin-top:5px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<section id="loginPage" class="login">
+  <div class="card" style="width:100%">
+    <div class="logo">🏫</div>
+    <h1>Absensi Sekolah</h1>
+    <div class="sub">Masuk ke Absensi Sekolah</div>
+
+    <label>Username</label>
+    <input id="username" placeholder="Contoh: siswa01">
+
+    <label>Password</label>
+    <input id="password" type="password" placeholder="Masukkan password">
+
+    <button class="btn primary" onclick="login()" style="margin-top:18px">Masuk</button>
+    <button class="btn demo" onclick="demoLogin()">Isi Akun Demo</button>
+    <div id="error" class="error"></div>
+
+    <p class="small" style="text-align:center;margin-top:20px">
+      Tahap 2.1 — kamera dan GPS dapat diuji melalui HTTPS.
+    </p>
+  </div>
+</section>
+
+<section id="appPage" class="hidden">
+  <header class="top">
+    <button class="menu" onclick="openMenu()" aria-label="Buka menu">☰</button>
+    <strong id="pageTitle">Dashboard</strong>
+    <span>🏫</span>
+  </header>
+  <aside id="sideMenu" class="side-menu">
+    <div class="side-title">☰ Menu</div>
+    <button onclick="goPage('home')">🏠 Beranda</button>
+    <button onclick="goPage('attendance')">📷 Absensi</button>
+    <button onclick="showSettings(); closeMenu()">⚙️ Pengaturan</button>
+  </aside>
+  <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+  <main id="content" class="page"></main>
+</section>
+</div>
+
+<script>
+let currentRole="";
+let studentName="Rizki Andira Putra";
+
+function demoLogin(){
+  document.getElementById("username").value="siswa01";
+  document.getElementById("password").value="123456";
+}
+function login(){
+  const u=document.getElementById("username").value.trim();
+  const p=document.getElementById("password").value.trim();
+  let r="";
+  if(u==="siswa01" && p==="123456") r="siswa";
+  else if(u==="admin" && p==="admin2010") r="admin";
+
+  if(r){
+    currentRole=r;
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("appPage").classList.remove("hidden");
+    render();
+  }else{
+    document.getElementById("error").textContent=
+      "Username atau password salah. Demo: siswa01 / 123456 atau admin / admin2010";
+  }
+}
+function now(){
+  return new Date().toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+}
+let currentPage="home";
+
+function render(){
+  currentPage="home";
+  updateHeader();
+  showPage();
+}
+
+function updateHeader(){
+  const title=document.getElementById("pageTitle");
+  title.textContent=currentPage==="home" ? "Beranda" : "Absensi";
+}
+
+function openMenu(){
+  const menu=document.getElementById("sideMenu");
+  menu.classList.toggle("open");
+}
+
+function closeMenu(){
+  document.getElementById("sideMenu").classList.remove("open");
+}
+
+function goPage(page){
+  currentPage=page;
+  closeMenu();
+  updateHeader();
+  showPage();
+}
+
+function showPage(){
+  if(currentPage==="attendance") attendancePage();
+  else homePage();
+}
+
+function homePage(){
+  document.getElementById("content").innerHTML=`
+    <div class="hero">
+      <h2>${currentRole==="admin"?"Dashboard Admin 👋":"Hai, "+studentName+"! ✨"}</h2>
+      <div>${currentRole==="admin"?"Pantau dan atur sistem absensi sekolah.":"Selamat datang. Gunakan menu untuk melakukan absensi."}</div>
+      <div class="clock"><small>WAKTU SAAT INI</small><strong id="clock">${now()}</strong></div>
+    </div>
+
+    <div class="section">
+      <h3>Menu Utama</h3>
+      <div class="menu-grid">
+        <button class="menu-card" onclick="goPage('attendance')"><span>📷</span><b>Absensi</b><small>Kamera + GPS</small></button>
+        <button class="menu-card" onclick="showSettings()"><span>⚙️</span><b>Pengaturan</b><small>Akun & aplikasi</small></button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="icon">📅</div><div><span>ABSEN BULAN INI</span><b>${currentRole==="admin"?"350":"18"}</b></div></div>
+      <div class="stat"><div class="icon">🟢</div><div><span>${currentRole==="admin"?"HADIR HARI INI":"TOTAL MASUK"}</span><b>${currentRole==="admin"?"287":"12"}</b></div></div>
+      <div class="stat"><div class="icon">🔴</div><div><span>${currentRole==="admin"?"BELUM ABSEN":"TOTAL PULANG"}</span><b>${currentRole==="admin"?"63":"5"}</b></div></div>
+    </div>
+
+    <div id="settingsBox" class="section hidden"></div>
+    <button class="btn logout" onclick="logout()">↪ Logout</button>`;
+  startClock();
+}
+
+function showSettings(){
+  const box=document.getElementById("settingsBox");
+  box.classList.remove("hidden");
+  box.innerHTML=`
+    <h3>⚙️ Pengaturan</h3>
+    <div class="row"><span>Mode akun</span><b>${currentRole==="admin"?"Admin":"Siswa"}</b></div>
+    <div class="row"><span>Username</span><b>${currentRole==="admin"?"admin":"siswa01"}</b></div>
+    <div class="row"><span>Status kamera</span><span class="badge">Siap digunakan</span></div>
+    <div class="row"><span>Status GPS</span><span class="badge">Siap digunakan</span></div>
+    <p class="small">Gunakan halaman Absensi untuk mengaktifkan kamera, mengambil foto, dan mendapatkan lokasi GPS.</p>`;
+}
+
+function attendancePage(){
+  document.getElementById("content").innerHTML=`
+    <div class="section" style="margin-top:0">
+      <h3>📋 Absensi Kehadiran</h3>
+      <p class="small">Aktifkan kamera dan lokasi. Setelah foto serta GPS berhasil, tekan Kirim Absensi.</p>
+
+      <div class="camera-box" style="position:relative">
+        <video id="video" autoplay playsinline muted class="hidden"></video>
+        <div id="cameraPlaceholder" style="text-align:center;padding:25px">
+          <div style="font-size:42px">📷</div>
+          <b>Kamera belum diaktifkan</b>
+          <div class="small" style="margin-top:6px">Tekan tombol untuk meminta izin kamera.</div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn demo" id="cameraBtn" onclick="startCamera()">📷 Aktifkan Kamera</button>
+        <button class="btn primary" onclick="takePhoto()">📸 Ambil Foto</button>
+      </div>
+
+      <canvas id="canvas" class="hidden"></canvas>
+      <img id="photoPreview" class="photo-preview hidden" alt="Preview selfie">
+
+      <div class="info-box">
+        <b>📍 Lokasi GPS</b>
+        <div id="gpsStatus" class="small" style="margin-top:7px">Belum mengambil lokasi.</div>
+        <button class="btn demo" onclick="getLocation()" style="margin-top:10px">📍 Cek Lokasi</button>
+      </div>
+
+      <div class="info-box">
+        <b>Jenis Absensi</b>
+        <select id="attendanceType" style="margin-top:8px">
+          <option>Absen Masuk (Datang)</option>
+          <option>Absen Pulang</option>
+        </select>
+      </div>
+
+      <button class="btn primary" onclick="submitAttendance()" style="margin-top:14px">📤 Kirim Absensi</button>
+      <div id="attendanceMessage" class="error"></div>
+    </div>`;
+}
+
+function startClock(){
+  clearInterval(window.clockTimer);
+  window.clockTimer=setInterval(()=>{
+    const c=document.getElementById("clock");
+    if(c)c.textContent=now();
+  },1000);
+}
+
+let cameraStream=null;
+let capturedPhoto=false;
+let gpsData=null;
+
+async function startCamera(){
+  const video=document.getElementById("video");
+  const placeholder=document.getElementById("cameraPlaceholder");
+  const msg=document.getElementById("attendanceMessage");
+  const btn=document.getElementById("cameraBtn");
+
+  if(!window.isSecureContext){
+    msg.className="error";
+    msg.textContent="Kamera membutuhkan HTTPS. Buka aplikasi dari link https://, bukan file HTML.";
+    return;
+  }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    msg.className="error";
+    msg.textContent="Browser tidak menyediakan akses kamera. Gunakan Chrome terbaru.";
+    return;
+  }
+
+  try{
+    if(cameraStream) cameraStream.getTracks().forEach(t=>t.stop());
+
+    cameraStream=await navigator.mediaDevices.getUserMedia({
+      audio:false,
+      video:{
+        facingMode:{ideal:"user"},
+        width:{ideal:1280},
+        height:{ideal:720}
+      }
+    });
+
+    video.srcObject=cameraStream;
+    video.classList.remove("hidden");
+    placeholder.classList.add("hidden");
+    btn.textContent="🔄 Kamera Aktif";
+    msg.className="gps-ok";
+    msg.textContent="Kamera aktif. Pastikan wajah terlihat jelas.";
+  }catch(e){
+    let detail="Kamera tidak dapat diakses.";
+    if(e.name==="NotAllowedError") detail="Izin kamera ditolak. Izinkan kamera untuk situs ini di Chrome.";
+    else if(e.name==="NotFoundError") detail="Kamera tidak ditemukan pada perangkat.";
+    else if(e.name==="NotReadableError") detail="Kamera sedang digunakan aplikasi lain.";
+    else if(e.name==="SecurityError") detail="Kamera diblokir karena koneksi bukan HTTPS.";
+    msg.className="error";
+    msg.textContent=detail;
+  }
+}
+
+function takePhoto(){
+  const video=document.getElementById("video");
+  const canvas=document.getElementById("canvas");
+  const img=document.getElementById("photoPreview");
+  const msg=document.getElementById("attendanceMessage");
+
+  if(!cameraStream || video.readyState<2 || !video.videoWidth){
+    msg.className="error";
+    msg.textContent="Aktifkan kamera dan tunggu sampai gambar muncul.";
+    return;
+  }
+
+  canvas.width=video.videoWidth;
+  canvas.height=video.videoHeight;
+  canvas.getContext("2d").drawImage(video,0,0,canvas.width,canvas.height);
+  img.src=canvas.toDataURL("image/jpeg",0.85);
+  img.classList.remove("hidden");
+  capturedPhoto=true;
+  msg.className="gps-ok";
+  msg.textContent="Foto selfie berhasil diambil.";
+}
+
+function getLocation(){
+  const status=document.getElementById("gpsStatus");
+
+  if(!window.isSecureContext){
+    status.innerHTML='<span class="gps-warn">GPS membutuhkan HTTPS. Buka aplikasi dari link https://.</span>';
+    return;
+  }
+  if(!navigator.geolocation){
+    status.innerHTML='<span class="gps-warn">GPS tidak didukung browser ini.</span>';
+    return;
+  }
+
+  status.textContent="Meminta izin lokasi...";
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      gpsData={
+        lat:pos.coords.latitude,
+        lon:pos.coords.longitude,
+        accuracy:pos.coords.accuracy
+      };
+      status.innerHTML='<span class="gps-ok">✓ Lokasi berhasil didapat.</span><br>'+
+        'Latitude: '+gpsData.lat.toFixed(6)+'<br>'+
+        'Longitude: '+gpsData.lon.toFixed(6)+'<br>'+
+        'Akurasi: ±'+Math.round(gpsData.accuracy)+' meter';
+    },
+    err=>{
+      let detail="Lokasi gagal didapat.";
+      if(err.code===1) detail="Izin lokasi ditolak. Izinkan lokasi untuk situs ini di Chrome.";
+      if(err.code===2) detail="Lokasi tidak tersedia. Aktifkan GPS/lokasi HP.";
+      if(err.code===3) detail="Permintaan lokasi timeout. Coba lagi.";
+      status.innerHTML='<span class="gps-warn">'+detail+'</span>';
+    },
+    {enableHighAccuracy:true,timeout:20000,maximumAge:0}
+  );
+}
+
+function submitAttendance(){
+  const msg=document.getElementById("attendanceMessage");
+  msg.className="error";
+  if(!capturedPhoto){msg.textContent="Silakan ambil foto selfie terlebih dahulu.";return;}
+  if(!gpsData){msg.textContent="Silakan cek lokasi GPS terlebih dahulu.";return;}
+  msg.className="gps-ok";
+  msg.textContent="✓ Foto, lokasi, jenis absensi, dan waktu siap dikirim. Firebase akan ditambahkan pada Tahap 3.";
+}
+
+function logout(){
+  if(cameraStream) cameraStream.getTracks().forEach(t=>t.stop());
+  cameraStream=null;
+  currentRole="";
+  document.getElementById("appPage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+  document.getElementById("error").textContent="";
+}
+</script>
+</body>
+</html>
